@@ -117,7 +117,8 @@ def main(args):
         IPv4Network("10.10.10.0/24"),
         IPv4Network("10.20.20.0/24"),
         IPv4Network("10.30.30.0/24"),
-        IPv4Network("10.40.40.0/24")]
+        IPv4Network("10.40.40.0/24"),
+        IPv4Network("10.124.0.0/16")]
 
     schema_registry_conf = {'url': args.schema_registry}
     schema_registry_client = SchemaRegistryClient(schema_registry_conf)
