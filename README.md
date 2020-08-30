@@ -10,16 +10,10 @@ The consumer uses redis as a means of storing and deduping the list of IP addres
 
 ## Requirements
 
-* Python3
+* python 3.8 (tested with 3.8.2)
 * Various pip modules in the requirements.txt
-  confluent-kafka
-  redis
-  six
-  requests
-  fastavro
-  jsonschema
-
 * Docker && Docker Compose
+* redis-cli (from the redis-tools package on ubuntu)
 
 ## Setup
 

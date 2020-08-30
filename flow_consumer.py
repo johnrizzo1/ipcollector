@@ -77,7 +77,8 @@ def main(args):
         'key.deserializer': string_deserializer,
         'value.deserializer': json_deserializer,
         'group.id': args.group,
-        'auto.offset.reset': "earliest"
+        # 'auto.offset.reset': "earliest"
+        'auto.offset.reset': "latest"
     }
 
     consumer = DeserializingConsumer(consumer_conf)
