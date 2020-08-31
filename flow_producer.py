@@ -23,13 +23,13 @@ class FlowRecord(object):
     A Netflow v8 record
 
     Args:
-        src_ip (str): Source IP
-        dst_ip (str): Destination IP
+        ip_src (str): Source IP
+        ip_dst (str): Destination IP
 
     """
-    def __init__(self, src_ip, dst_ip):
-        self.src_ip = src_ip
-        self.dst_ip = dst_ip
+    def __init__(self, ip_src, ip_dst):
+        self.ip_src = ip_src
+        self.ip_dst = ip_dst
 
 
 def record_to_dict(record, ctx):
@@ -44,8 +44,8 @@ def record_to_dict(record, ctx):
         dict: Dict populated with user attributes to be serialized
 
     """
-    return dict(src_ip=record.src_ip,
-                dst_ip=record.dst_ip)
+    return dict(ip_src=record.ip_src,
+                ip_dst=record.ip_dst)
 
 
 def random_ip(subnets):
@@ -100,16 +100,16 @@ def main(args):
       "description": "A netflow record coming from Kafka",
       "type": "object",
       "properties": {
-        "src_ip": {
+        "ip_src": {
           "description": "Source IP",
           "type": "string"
         },
-        "dst_ip": {
+        "ip_dst": {
           "description": "Destination IP",
           "type": "string"
         }
       },
-      "required": [ "src_ip", "dst_ip" ]
+      "required": [ "ip_src", "ip_dst" ]
     }
     """
 
@@ -137,8 +137,8 @@ def main(args):
         # Serve on_delivery callbacks from previous calls to produce()
         producer.poll(0.0)
         try:
-            record = FlowRecord(src_ip=random_ip(subnets),
-                                dst_ip=random_ip(subnets))
+            record = FlowRecord(ip_src=random_ip(subnets),
+                                ip_dst=random_ip(subnets))
             producer.produce(topic=topic, key=str(uuid4()),
                             value=record, on_delivery=delivery_report)
         except KeyboardInterrupt:

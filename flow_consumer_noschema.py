@@ -6,13 +6,15 @@
 # attempts to store a unique list in redis
 #
 import argparse
-
-from confluent_kafka import DeserializingConsumer
-from confluent_kafka.schema_registry.json_schema import JSONDeserializer
-from confluent_kafka.serialization import StringDeserializer
-
+import json
+import logging
+import sys
 import redis
 
+from pprint import pprint
+from confluent_kafka import Consumer
+
+msg_count = 0
 
 class FlowRecord(object):
     """
@@ -49,39 +51,16 @@ def main(args):
     topic = args.topic
     redis_table = args.redis_table
     redis_server = args.redis_server
-
-    schema_str = """
-    {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "FlowRecord",
-      "description": "A netflow record coming from Kafka",
-      "type": "object",
-      "properties": {
-        "ip_src": {
-          "description": "Source IP",
-          "type": "string"
-        },
-        "ip_dst": {
-          "description": "Destination IP",
-          "type": "string"
-        }
-      },
-      "required": [ "ip_src", "ip_dst" ]
-    }
-    """
-    json_deserializer = JSONDeserializer(schema_str, from_dict=dict_to_record)
-    string_deserializer = StringDeserializer('utf_8')
+    # msg_count = 0
 
     consumer_conf = {
         'bootstrap.servers': args.bootstrap_servers,
-        'key.deserializer': string_deserializer,
-        'value.deserializer': json_deserializer,
         'group.id': args.group,
         # 'auto.offset.reset': "earliest"
         'auto.offset.reset': "latest"
     }
 
-    consumer = DeserializingConsumer(consumer_conf)
+    consumer = Consumer(consumer_conf)
     consumer.subscribe([topic])
     r = redis.Redis(host=redis_server, port=6379, db=0)
 
@@ -92,14 +71,14 @@ def main(args):
             if msg is None:
                 continue
 
-            record = msg.value()
+            record = json.loads(msg.value())
             if record is not None:
-                print("FlowRecord {}: ip_src: {}\tip_dst: {}"
-                      .format(msg.key(), record.ip_src, record.ip_dst))
-                r.sadd(redis_table, record.ip_src)
-                r.sadd(redis_table, record.ip_dst)
+                logging.info("FlowRecord {}: ip_src: {}\tip_dst: {}"
+                    .format(msg.key(), record['ip_src'], record['ip_dst']))
+                r.sadd(redis_table, record['ip_src'])
+                r.sadd(redis_table, record['ip_dst'])
         except KeyboardInterrupt:
-            print("\nUnique IPs: {}".format(r.scard(redis_table)))
+            logging.info("\nUnique IPs: {}".format(r.scard(redis_table)))
             break
 
     consumer.close()
@@ -114,5 +93,7 @@ if __name__ == '__main__':
     parser.add_argument('-r', dest="redis_server", default="localhost", help="Redis Server")
     parser.add_argument('-i', dest="redis_table", default="ipaddress", 
                         help="Redis table to store/read IP address'")
+
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
     main(parser.parse_args())

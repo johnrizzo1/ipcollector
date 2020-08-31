@@ -38,7 +38,7 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_JMX_PORT: 9101
-      KAFKA_CREATE_TOPICS: "flows,pmacct.acct:3:1"
+      KAFKA_CREATE_TOPICS: "flows:3:1,pmacct.acct:3:1"
       KAFKA_LOG_RETENTION_HOURS: 1
       CONFLUENT_METRICS_REPORTER_BOOTSTRAP_SERVERS: broker:29092
       CONFLUENT_METRICS_REPORTER_ZOOKEEPER_CONNECT: zookeeper:2181
@@ -222,11 +222,16 @@ services:
 
   pmacct:
     image: pmacct/pmacctd
+    # hostname: pmacct
+    container_name: pmacct
     network_mode: host
     # networks:
       # - kafka-internal
     volumes:
       - ./files/etc/pmacct:/etc/pmacct:ro
+    depends_on:
+      - broker
+      - redis
     restart: always
 
   flow-exporter:
@@ -235,6 +240,8 @@ services:
     container_name: flow-exporter
     restart: always
     command: --brokers=broker:29092 --topic=pmacct.acct --asn=397143
+    depends_on:
+      - prometheus
     expose:
       - 9590
     ports:
@@ -264,6 +271,8 @@ services:
     hostname: grafana
     container_name: grafana
     restart: always
+    depends_on:
+      - prometheus
     ports:
       - 3000:3000
     networks:
