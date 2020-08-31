@@ -2,7 +2,7 @@ from confluent_kafka.admin import AdminClient, NewTopic
 
 a = AdminClient({'bootstrap.servers': 'localhost'})
 
-new_topics = [NewTopic(topic, num_partitions=3, replication_factor=1) for topic in ["flows"]]
+new_topics = [NewTopic(topic, num_partitions=3, replication_factor=1) for topic in ["flows"]] #, "pmacct.acct"]]
 # Note: In a multi-cluster production scenario, it is more typical to use a replication_factor of 3 for durability.
 
 # Call create_topics to asynchronously create topics. A dict
