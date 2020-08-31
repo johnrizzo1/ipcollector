@@ -1,2 +1,1 @@
-ifindex=100  ifname=ens3
-ifindex=200  ifname=ens4
+ifindex=2  ifname=enp0s31f6
