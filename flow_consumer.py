@@ -94,7 +94,7 @@ def main(args):
 
             record = msg.value()
             if record is not None:
-                print("FlowRecord {}: src_ip: {}\tdst_ip: {}\n"
+                print("FlowRecord {}: src_ip: {}\tdst_ip: {}"
                       .format(msg.key(), record.src_ip, record.dst_ip))
                 r.sadd(redis_table, record.src_ip)
                 r.sadd(redis_table, record.dst_ip)

@@ -50,3 +50,21 @@ Run redis-cli.  From there you can run ```SCARD ipaddress``` to get the number o
 Type CTRL+c in each of the producer and consumer terminals to stop them.
 
 Type CTRL+c in the docker-compose terminal to stop the services (I'm assuming you didn't add -d arg to docker-compose.  If you did run docker-compose stop it.)
+
+
+## References
+
+* Example Kafka Stack: https://github.com/simplesteph/kafka-stack-docker-compose
+* Consumer/Producer Example https://github.com/confluentinc/confluent-kafka-python
+* Kafka Admin CLI: https://docs.cloudera.com/documentation/enterprise/latest/topics/kafka_admin_cli.html
+* Kafka Consumer Config: https://docs.confluent.io/current/installation/configuration/consumer-configs.html
+* Redis Docker Setup: https://github.com/docker-library/redis
+* Redis Persistence: https://redis.io/topics/persistence
+* Verifying Snapshots and Append-only files: https://redislabs.com/ebook/part-2-core-concepts/chapter-4-keeping-data-safe-and-ensuring-performance/4-3-handling-system-failures/4-3-1-verifying-snapshots-and-append-only-files/
+* PMAcct Docker Setup: https://github.com/pmacct/pmacct/tree/master/docker and https://hub.docker.com/r/pmacct/pmacctd
+* Bird BGP Daemon: https://bird.network.cz/
+* Bird Docker Setup: https://github.com/DE-IBH/bird-docker
+* Netflow analysis with prometheus: 
+  https://github.com/neptune-networks/flow-exporter
+  https://brooks.sh/2019/11/17/network-flow-analysis-with-prometheus/
+* Flow Exporter for Prometheus: https://github.com/neptune-networks/flow-exporter

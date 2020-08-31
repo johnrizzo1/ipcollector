@@ -84,9 +84,9 @@ def delivery_report(err, msg):
 
     """
     if err is not None:
-        print("Delivery failed for User record {}: {}".format(msg.key(), err))
+        print("Delivery failed for FlowRecord record {}: {}".format(msg.key(), err))
         return
-    print('User record {} successfully produced to {} [{}] at offset {}'.format(
+    print('FlowRecord {} successfully produced to {} [{}] at offset {}'.format(
         msg.key(), msg.topic(), msg.partition(), msg.offset()))
 
 
@@ -118,7 +118,8 @@ def main(args):
         IPv4Network("10.20.20.0/24"),
         IPv4Network("10.30.30.0/24"),
         IPv4Network("10.40.40.0/24"),
-        IPv4Network("10.124.0.0/16")]
+        IPv4Network("10.124.0.0/16"),
+        IPv4Network("192.168.0.0/16")]
 
     schema_registry_conf = {'url': args.schema_registry}
     schema_registry_client = SchemaRegistryClient(schema_registry_conf)
