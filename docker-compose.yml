@@ -269,22 +269,23 @@ services:
     networks:
       - monitor
 
-  trex:
-    image: trexcisco/trex
-    hostname: trex
-    container_name: trex
-    cap_add:
-      - ALL
-    privileged: true
-    ports:
-      - 4500:4500
-      - 4501:4501
-      - 4507:4507
-    network_mode: host
-    # networks:
-    #   - kafka-internal
-    #   - kafka
-    #   - monitor
+  # trex:
+    # image: trexcisco/trex
+    # hostname: trex
+    # container_name: trex
+    # cap_add:
+    #   - ALL
+    # privileged: true
+    # ports:
+    #   - 4500:4500
+    #   - 4501:4501
+    #   - 4507:4507
+    # network_mode: host
+    # tty: true
+    # # networks:
+    # #   - kafka-internal
+    # #   - kafka
+    # #   - monitor
 
 networks:
   kafka-internal:

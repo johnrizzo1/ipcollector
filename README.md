@@ -51,6 +51,10 @@ Type CTRL+c in each of the producer and consumer terminals to stop them.
 
 Type CTRL+c in the docker-compose terminal to stop the services (I'm assuming you didn't add -d arg to docker-compose.  If you did run docker-compose stop it.)
 
+## Other Notes
+* Connect to the kafka broker and run the following commands
+  kafka-console-consumer --bootstrap-server localhost:9092 --topic pmacct.acct
+  kafka-topics --zookeeper zookeeper:2181 --list
 
 ## References
 
@@ -68,3 +72,4 @@ Type CTRL+c in the docker-compose terminal to stop the services (I'm assuming yo
   https://github.com/neptune-networks/flow-exporter
   https://brooks.sh/2019/11/17/network-flow-analysis-with-prometheus/
 * Flow Exporter for Prometheus: https://github.com/neptune-networks/flow-exporter
+* pmacct docs: https://github.com/pmacct/pmacct/blob/master/QUICKSTART
